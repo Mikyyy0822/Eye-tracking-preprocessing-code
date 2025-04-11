@@ -1,0 +1,28 @@
+import os
+import pandas as pd
+
+# Input and output folder paths
+input_folder = "Enter the folder path"
+output_folder = "Output folder path"
+
+# Make sure the output folder exists
+os.makedirs(output_folder, exist_ok=True)
+
+# Iterate through all CSV files in the input folder
+for file_name in os.listdir(input_folder):
+    if file_name.endswith(".csv"):
+        input_file_path = os.path.join(input_folder, file_name)
+        output_file_path = os.path.join(output_folder, file_name)
+
+        # Reading CSV files
+        df = pd.read_csv(input_file_path)
+
+        # Check for nineteenth column (column S)
+        if df.shape[1] >= 19:
+            #  Delete rows in the nineteenth column (column S) with a value of -1
+            df_filtered = df[df.iloc[:, 18] != -1]
+
+            # Save to output folder
+            df_filtered.to_csv(output_file_path, index=False)
+        else:
+            print(f"The  file {file_name}nineteenth column is missing and has been skipped.")
