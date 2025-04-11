@@ -1,0 +1,28 @@
+import os
+import pandas as pd
+
+# Input and output folder paths
+input_folder = "C:/Users/Mikyyy/Desktop/1111/444del-1"  #  Replace with your input folder path
+output_folder = "C:/Users/Mikyyy/Desktop/1111/444zhushishichangdel"  # Replace with your output folder path
+
+# Make sure the output folder exists
+os.makedirs(output_folder, exist_ok=True)
+
+#  Iterate through all CSV files in the input folder
+for file_name in os.listdir(input_folder):
+    if file_name.endswith(".csv"):
+        input_file_path = os.path.join(input_folder, file_name)
+        output_file_path = os.path.join(output_folder, file_name)
+
+        # Reading CSV files
+        df = pd.read_csv(input_file_path)
+
+        # Check for column 38
+        if df.shape[1] >= 38:
+            #  Filter rows with values between 150 and 900 in column 38
+            filtered_df = df[(df.iloc[:, 37] >= 150) & (df.iloc[:, 37] <= 900)]
+
+            # Save results to the output folder
+            filtered_df.to_csv(output_file_path, index=False)
+        else:
+            print(f"File {file_name} Missing column 38, skipped.")
